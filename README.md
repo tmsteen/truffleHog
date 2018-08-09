@@ -2,22 +2,28 @@
 Searches through git repositories for secrets, digging deep into commit history and branches. This is effective at finding secrets accidentally committed.
 
 ## NEW
-Trufflehog previously functioned by running entropy checks on git diffs. This functionality still exists, but high signal regex checks have been added, and the ability to surpress entropy checking has also been added.
+Trufflehog previously functioned by running entropy checks on git diffs. This functionality still exists, but high signal regex checks have been added, and the ability to suppress entropy checking has also been added.
 
 These features help cut down on noise, and makes the tool easier to shove into a devops pipeline.
 
 
 ```
-truffleHog --regex --entropy=False https://github.com/dxa4481/truffleHog.git
+trufflehog --regex --entropy=False https://github.com/dxa4481/truffleHog.git
 ```
 
 or
 
 ```
-truffleHog file:///user/dxa4481/codeprojects/truffleHog/
+trufflehog file:///user/dxa4481/codeprojects/truffleHog/
 ```
 
 ![Example](https://i.imgur.com/YAXndLD.png)
+
+The tool can also be used with a Personal Access Token (PAT) directly integrated in the URL, if you are scanning private repositories:
+
+```
+trufflehog --regex https://USERNAME:PAT@github.com/YOUR_ORG/YOUR_REPO.git
+```
 
 ## Install
 ```
@@ -34,12 +40,12 @@ Custom regexes can be added with the following flag `--rules /path/to/rules`. Th
 ```
 Things like subdomain enumeration, s3 bucket detection, and other useful regexes highly custom to the situation can be added.
 
-Feel free to also contribute high signal regexes upstream that you think will benifit the community. Things like Azure keys, Twilio keys, Google Compute keys, are welcome, provided a high signal regex can be constructed.
+Feel free to also contribute high signal regexes upstream that you think will benefit the community. Things like Azure keys, Twilio keys, Google Compute keys, are welcome, provided a high signal regex can be constructed.
 
 Trufflehog's base rule set sources from https://github.com/dxa4481/truffleHogRegexes/blob/master/truffleHogRegexes/regexes.json
 
 ## How it works
-This module will go through the entire commit history of each branch, and check each diff from each commit, and check for secrets. This is both by regex and by entropy. For entropy checks, trufflehog will evaluate the shannon entropy for both the base64 char set and hexidecimal char set for every blob of text greater than 20 characters comprised of those character sets in each diff. If at any point a high entropy string >20 characters is detected, it will print to the screen.
+This module will go through the entire commit history of each branch, and check each diff from each commit, and check for secrets. This is both by regex and by entropy. For entropy checks, trufflehog will evaluate the Shannon entropy for both the base64 char set and hexadecimal char set for every blob of text greater than 20 characters comprised of those character sets in each diff. If at any point a high entropy string >20 characters is detected, it will print to the screen.
 
 ## Help
 
@@ -60,6 +66,7 @@ optional arguments:
   --regex               Enable high signal regex checks
   --rules RULES         Ignore default regexes and source from json list file
   --entropy DO_ENTROPY  Enable entropy checks
+  --status_on_failures  Returns exit code 1 if results are found
   --since_commit SINCE_COMMIT
                         Only scan from a given commit hash
   --max_depth MAX_DEPTH
