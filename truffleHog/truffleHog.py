@@ -25,7 +25,7 @@ def main():
                         help="Output in JSON")
     parser.add_argument("--regex", dest="do_regex", action="store_true",
                         default=False, help="Enable high signal regex checks")
-    parser.add_argument("--rules", dest="rules", default={}
+    parser.add_argument("--rules", dest="rules", default={},
                         help="Ignore default regexes and source from json list file") # noqa
     parser.add_argument("--entropy", dest="do_entropy", default=True,
                         help="Enable entropy checks")
