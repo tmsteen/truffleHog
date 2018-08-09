@@ -66,6 +66,7 @@ optional arguments:
   --regex               Enable high signal regex checks
   --rules RULES         Ignore default regexes and source from json list file
   --entropy DO_ENTROPY  Enable entropy checks
+  --status_on_failures  Returns exit code 1 if results are found
   --since_commit SINCE_COMMIT
                         Only scan from a given commit hash
   --max_depth MAX_DEPTH

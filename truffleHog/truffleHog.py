@@ -24,24 +24,22 @@ def main():
     parser.add_argument('--json', dest="output_json", action="store_true",
                         help="Output in JSON")
     parser.add_argument("--regex", dest="do_regex", action="store_true",
-                        help="Enable high signal regex checks")
-    parser.add_argument("--rules", dest="rules",
+                        default=False, help="Enable high signal regex checks")
+    parser.add_argument("--rules", dest="rules", default={}
                         help="Ignore default regexes and source from json list file") # noqa
-    parser.add_argument("--entropy", dest="do_entropy",
+    parser.add_argument("--entropy", dest="do_entropy", default=True,
                         help="Enable entropy checks")
-    parser.add_argument("--since_commit", dest="since_commit",
+    parser.add_argument("--status_on_failures", dest='status_on_failures',
+                        action='store_true', default=False,
+                        help="Returns exit code 1 if results are found",)
+    parser.add_argument("--since_commit", dest="since_commit", default=None,
                         help="Only scan from a given commit hash")
-    parser.add_argument("--max_depth", dest="max_depth",
+    parser.add_argument("--max_depth", dest="max_depth", default=1000000,
                         help="The max commit depth to go back when searching for secrets") # noqa
     parser.add_argument("-f, --force_clone", action='store_true',
                         dest="force_clone",
                         help="Ensure the given git repository is cloned, even if it's already on disk (file://...); Remote repositories are always cloned;") # noqa
     parser.add_argument('git_url', type=str, help='URL for secret searching')
-    parser.set_defaults(regex=False)
-    parser.set_defaults(rules={})
-    parser.set_defaults(max_depth=1000000)
-    parser.set_defaults(since_commit=None)
-    parser.set_defaults(entropy=True)
     args = parser.parse_args()
     rules = {}
     if args.rules:
@@ -60,7 +58,7 @@ def main():
     output = find_strings(args.git_url, args.since_commit, args.max_depth,
                           args.output_json, args.do_regex, do_entropy,
                           args.force_clone, surpress_output=False)
-    if output["foundIssues"]:
+    if output["foundIssues"] and status_on_failures:
         sys.exit(1)
     else:
         sys.exit(0)
