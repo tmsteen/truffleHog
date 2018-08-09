@@ -8,16 +8,22 @@ These features help cut down on noise, and makes the tool easier to shove into a
 
 
 ```
-truffleHog --regex --entropy=False https://github.com/dxa4481/truffleHog.git
+trufflehog --regex --entropy=False https://github.com/dxa4481/truffleHog.git
 ```
 
 or
 
 ```
-truffleHog file:///user/dxa4481/codeprojects/truffleHog/
+trufflehog file:///user/dxa4481/codeprojects/truffleHog/
 ```
 
 ![Example](https://i.imgur.com/YAXndLD.png)
+
+The tool can also be used with a Personal Access Token (PAT) directly integrated in the URL, if you are scanning private repositories:
+
+```
+trufflehog --regex https://USERNAME:PAT@github.com/YOUR_ORG/YOUR_REPO.git
+```
 
 ## Install
 ```
