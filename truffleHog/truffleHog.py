@@ -29,7 +29,7 @@ def main():
                         help="Ignore default regexes and source from json list file") # noqa
     parser.add_argument("--entropy", dest="do_entropy", default=True,
                         help="Enable entropy checks")
-    parser.add_argument("--status_on_failures", dest='status_on_failures',
+    parser.add_argument("--status_on_failures", dest="status_on_failures",
                         action='store_true', default=False,
                         help="Returns exit code 1 if results are found",)
     parser.add_argument("--since_commit", dest="since_commit", default=None,
@@ -58,7 +58,7 @@ def main():
     output = find_strings(args.git_url, args.since_commit, args.max_depth,
                           args.output_json, args.do_regex, do_entropy,
                           args.force_clone, surpress_output=False)
-    if output["foundIssues"] and status_on_failures:
+    if output["foundIssues"] and args.status_on_failures:
         sys.exit(1)
     else:
         sys.exit(0)
